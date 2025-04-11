@@ -1,0 +1,43 @@
+package com.example.service;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.bean.BookDao;
+
+public class BookDaoService {
+	
+	private BookDao bookDao;
+	
+	public void storeBookData() throws IOException {
+		
+		File f = new File("Book.txt");
+		
+		FileReader fr = new FileReader(f);
+		
+		BufferedReader br = new BufferedReader(fr);
+		
+		String line = br.readLine();
+		
+		while(line != null) {
+			
+			String[] split = line.split(",");
+			Integer bid = Integer.parseInt(split[0]);
+			String bname = split[1];
+			Double bprice = Double.parseDouble(split[2]);
+			
+			bookDao.saveBook(bid, bname, bprice);
+			
+			line = br.readLine();
+			
+			System.out.println("Data Inserted into Database..............");
+			br.close();
+			
+		}
+	}
+
+}
